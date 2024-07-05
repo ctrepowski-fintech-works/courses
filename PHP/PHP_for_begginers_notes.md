@@ -85,3 +85,53 @@ callFunction($myFunction);
 ```
 
 This could be used to add flexibility to an action, like filtering, and the filter function differs from case to case.
+
+## PHP Core Functions
+
+### `extract`
+
+Taken from [Lesson 30: PHP Autoloading and Extraction](https://laracasts.com/series/php-for-beginners-2023-edition/episodes/30).
+
+Converts entries from associative array into actual variables.
+
+[PHP Documentation for `extract`](https://www.php.net/manual/en/function.extract.php).
+
+Example:
+
+```php
+$var_array = array("color" => "blue",
+                   "size"  => "medium",
+                   "shape" => "sphere");
+extract($var_array);
+
+/*
+equivalent to:
+foreach ($var_array as $key => $value) {
+    $$key = $value;
+}
+*/
+
+// values are now accesible as variables
+echo "$color, $size, $shape"; // output: blue, medium, sphere 
+```
+
+Useful when loading a view (within a function, for example) which requires some params. So params are passed as an associative array and the extract function converts all of the items into variables accesible from the view.
+
+### `spl_autoload_register`
+
+Taken from [Lesson 30: PHP Autoloading and Extraction](https://laracasts.com/series/php-for-beginners-2023-edition/episodes/30).
+
+*SPL*: Standard PHP Library.
+
+Allows creating a rule for loading classes that have not been included/required explicitly but have been referenced during execution.
+
+[PHP Documentation for `spl_autoload_register`](https://www.php.net/manual/en/function.spl-autoload-register.php).
+
+Example:
+```php
+spl_autoload_register(function ($class) {
+    require "path/to/classes/dir/$class.php";
+})
+
+$db = new Database(); // Database.php has not been included yet. Triggers spl_autoload_register's callback.
+```
