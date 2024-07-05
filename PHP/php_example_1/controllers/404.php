@@ -1,4 +1,5 @@
 <?php
 
-$heading = 'Error';
-require 'views/404.view.php';
+view('404.view.php', [
+    'heading' => 'Not Found',
+]);
