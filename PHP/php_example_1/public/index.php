@@ -3,9 +3,10 @@
 const BASE_PATH = __DIR__.'/../';
 
 spl_autoload_register(function ($class) {
-    require_once base_path("Core/{$class}.php");
+    $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+    require_once base_path("{$class}.php");
 });
 
-require BASE_PATH . 'functions.php';
-require base_path('router.php');
+require BASE_PATH . 'Core/functions.php';
+require base_path('Core/router.php');
 
