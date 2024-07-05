@@ -164,7 +164,7 @@ namespace MyNamespace;
 $obj = new \PDO(); // without the \, php will look for PDO class inside MyNamespace
 ```
 
-To avoid repeatedly using this notation, we can call `use Namespace\Class` to allow direct use of `Class`. If nothing preceeds the `\`, the leading backslash can be removed.
+To avoid repeatedly using this notation, we can call `use Namespace\Class` to allow direct use of `Class`. If the name does not belong to a specific namespace, the leading backslash can be removed.
 
 ```php
 <?php
