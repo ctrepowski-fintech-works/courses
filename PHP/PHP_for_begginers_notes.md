@@ -135,3 +135,43 @@ spl_autoload_register(function ($class) {
 
 $db = new Database(); // Database.php has not been included yet. Triggers spl_autoload_register's callback.
 ```
+
+## Namespaces
+
+Used to group related classes, functions and variables.
+
+The syntax is
+
+```php
+<?php
+namespace MyNamespace;
+
+// file content
+```
+
+which includes all file content inside `MyNamespace`. The syntax to refer to a namespace is with `\` (backslash):
+
+```php
+$myObj = MyNamespace\MyClass();
+```
+
+When using external names inside a file containing `namespace SomeNamespace`, we can refer to the 'absolute path', like `OtherNamespace\MyClass`. If the name does not belong to a specific namespace, we can consider that it belongs to the 'base' namespace, to which we can refer with `\`:
+
+```php
+<?php
+namespace MyNamespace;
+
+$obj = new \PDO();
+```
+
+To avoid repeatedly using this notation, we can call `use Namespace\Class` to allow direct use of `Class`. If nothing preceeds the `\`, the leading backslash can be removed.
+
+```php
+<?php
+namespace MyNamespace;
+use PDO;
+use AnotherNamespace\MyClass;
+
+$obj = new PDO();
+$obj2 = new MyClass();
+```
