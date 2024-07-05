@@ -2,9 +2,9 @@
 return [
     'db_config' => [
         'host' => 'localhost',
-        'dbname' => 'mydatabse',
+        'dbname' => 'postgres',
         'port' => 5432,
-        'user' => 'myuser',
+        'user' => 'postgres',
         'password' => 'mypassword',
     ],
 ];
