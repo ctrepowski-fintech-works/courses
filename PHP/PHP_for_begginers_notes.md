@@ -161,7 +161,7 @@ When using external names inside a file containing `namespace SomeNamespace`, we
 <?php
 namespace MyNamespace;
 
-$obj = new \PDO();
+$obj = new \PDO(); // without the \, php will look for PDO class inside MyNamespace
 ```
 
 To avoid repeatedly using this notation, we can call `use Namespace\Class` to allow direct use of `Class`. If nothing preceeds the `\`, the leading backslash can be removed.
