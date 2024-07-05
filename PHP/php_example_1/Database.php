@@ -3,6 +3,7 @@
 class Database
 {
     public PDO $connection;
+    public PDOStatement $statement;
 
     public function __construct($config) {
         $dsn = 'pgsql:'.http_build_query($config, '', ';');
@@ -11,10 +12,26 @@ class Database
         ]);
     }
 
-    public function query($query, $params = []): false|PDOStatement
+    public function query($query, $params = []): Database
     {
-        $statement = $this->connection->prepare($query);
-        $statement->execute($params);
-        return $statement;
+        $this->statement = $this->connection->prepare($query);
+        $this->statement->execute($params);
+        return $this;
+    }
+
+    public function find() {
+        return $this->statement->fetch();
+    }
+    public function findAll() {
+        return $this->statement->fetchAll();
+    }
+    public function findOrFail() {
+        $result = $this->statement->fetch();
+
+        if (!$result) {
+            abort();
+        }
+
+        return $result;
     }
 }
