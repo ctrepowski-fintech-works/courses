@@ -151,6 +151,18 @@ spl_autoload_register(function ($class) {
 $db = new Database(); // Database.php has not been included yet. Triggers spl_autoload_register's callback.
 ```
 
+### `password_hash`
+
+Taken from [Lesson 40: Manage Passwords Like This For The Remainder of Your Career](https://laracasts.com/series/php-for-beginners-2023-edition/episodes/40).
+
+[PHP Documentation for password_hash](https://www.php.net/manual/en/function.password-hash.php).
+
+Creates a password hash with the specified algorithm. Default algorithm is bcrypt.
+
+```php
+$hashedPassword = password_hash('my_password', PASSWORD_BCRYPT);
+```
+
 ## Namespaces
 
 Used to group related classes, functions and variables.
