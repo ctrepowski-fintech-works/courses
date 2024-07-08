@@ -117,6 +117,21 @@ echo "$color, $size, $shape"; // output: blue, medium, sphere
 
 Useful when loading a view (within a function, for example) which requires some params. So params are passed as an associative array and the extract function converts all of the items into variables accesible from the view.
 
+### `compact`
+
+Does the opposite of `extract`. Creates an associative array from variables. The keys of the array are the names of the variables passed.
+
+```php
+$color = 'blue';
+$size = 'medium';
+$shape = 'sphere';
+$var_array = compact($color, $size, $shape);
+
+echo $var_array['color']; // output: blue
+echo $var_array['size']; // output: medium
+echo $var_array['shape']; // output: sphere
+```
+
 ### `spl_autoload_register`
 
 Taken from [Lesson 30: PHP Autoloading and Extraction](https://laracasts.com/series/php-for-beginners-2023-edition/episodes/30).
