@@ -190,3 +190,27 @@ use AnotherNamespace\MyClass;
 $obj = new PDO();
 $obj2 = new MyClass();
 ```
+
+## PHP Sessions
+Taken from [Lesson 37: PHP Sessions 101](https://laracasts.com/series/php-for-beginners-2023-edition/episodes/37).
+
+A session is a way to store information (in variables) to be used across multiple pages.
+
+To start a session the function `session_start` is used.
+
+Session information can be stored to and read from superglobal `$_SESSION` variable.
+
+On the server side, session information is saved to individual files, the default location for this file can be obtained from:
+
+```bash
+php --info | grep session.save_path
+```
+
+If this does not have a specific value, then the path is the default tmp dir, which can be read from
+
+```bash
+echo $TMPDIR
+```
+Normally session files start with `sess_`, followed by a unique identifier.
+
+On the client side this unique identifier is saved as a cookie.
