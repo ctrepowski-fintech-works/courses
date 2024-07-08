@@ -194,9 +194,11 @@ $obj2 = new MyClass();
 ## PHP Sessions
 Taken from [Lesson 37: PHP Sessions 101](https://laracasts.com/series/php-for-beginners-2023-edition/episodes/37).
 
+[PHP Documentation for Session Handling](https://www.php.net/manual/en/book.session.php);
+
 A session is a way to store information (in variables) to be used across multiple pages.
 
-To start a session the function `session_start` is used.
+To start or restore a session the function `session_start` is used.
 
 Session information can be stored to and read from superglobal `$_SESSION` variable.
 
