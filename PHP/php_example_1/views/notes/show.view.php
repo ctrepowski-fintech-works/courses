@@ -12,14 +12,22 @@
                 </a>
             </p>
             <p>
-                <?=htmlspecialchars($note['body'])?>
+                <?= htmlspecialchars($note['body']) ?>
             </p>
 
+            <footer class="mt-6">
+                <a href="/note/edit?id=<?= $note['id'] ?>"
+                   class="text-sm font-semibold leading-6 text-gray-900">Edit</a>
+            </footer>
             <form method="post">
                 <input type="hidden" name="_method" value="DELETE">
-                <input type="hidden" name="id" value="<?=$note['id']?>">
-                <button class="text-red-500 underline mt-6" >Delete</button>
+                <input type="hidden" name="id" value="<?= $note['id'] ?>">
+                <button class="text-red-500 underline mt-6">Delete</button>
             </form>
+            <!--            <form method="get" action="/note/edit">-->
+            <!--                <input type="hidden" name="id" value="--><?php //=$note['id']?><!--">-->
+            <!--                <button class="text-blue-500 underline mt-6" >Edit</button>-->
+            <!--            </form>-->
         </div>
     </main>
 
