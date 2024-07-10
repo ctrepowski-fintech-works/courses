@@ -224,6 +224,37 @@ class Post extends Model {
 App\Models\Post::first()->comments; //as an attribute!
 ```
 
+### Database Seeders
+
+Taken from [Lesson 15: Understanding Database Seeders](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/15).
+
+Seeders are helper classes that populate the tables of the database. They may or may not use related factories.
+
+Usually the seeders will be run after a fresh migration or for testing purposes.
+
+To fresh migrate and re-seed:
+```bash
+php artisan migrate:fresh --seed
+```
+
+To run the default seeder:
+```bash
+php artisan db:seed
+```
+
+To create a seeder class:
+
+```bash
+php artisan make:seeder PostSeeder
+```
+
+To run a specific seeder:
+
+```bash
+php artisan db:seed --class PostSeeder
+```
+
+
 ## Pivot Tables
 
 Taken from [Lesson 12: Pivot Tables and BelongsToMany relationships](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/12).
@@ -339,3 +370,40 @@ public function boot() {
 ```
 
 In this case, the `Post:all()` call throws an error.
+
+## Pagination
+
+Taken from [Lesson 14: All You Need to Know About Pagination](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/14).
+
+[Laravel Documentation on Pagination](https://laravel.com/docs/11.x/pagination).
+
+When datasets become bigger, its a good idea to display them in chunks, or *pages*. Laravel supports this natively. To get paginated data, instead of
+
+```php
+$posts = App\Models\Posts::get();
+```
+
+the call should be
+
+```php
+$posts = App\Models\Posts::paginate(10); //show 10 posts per page
+```
+
+To include the default page navigator, in the view:
+
+```php
+<div>
+    {{ $posts->links() }}
+</div>
+```
+
+It uses tailwind by default. To customize, the command
+
+```bash
+php artisan vendor:publish #selecting pagination option
+```
+
+will copy the pagination blade components to the project's views folder, so now they're accesible and fully customizable.
+
+Therea are also another options: `simplePaginate` and `cursorPaginate`.
+
