@@ -175,6 +175,127 @@ User::factory()->unverified()->create();
 }
 ```
 
+### Relationships
+
+#### Foreign key
+
+Taken from [Lesson 10: Model Factories](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/10).
+
+[Laravel Documentation for]https://laravel.com/docs/5.0/eloquent#one-to-one
+
+A foreign key can be specified in the migration file. For example, if a `Comment` is related to a `Post`, the comments table should have a foreign key to a post's record.
+
+```php
+// inside migration file
+Schema::create('comments', function (Blueprint $table) {
+    $table->id();
+    $table->foreignIdFor(\App\Models\Post::class); // creates the 'post_id' column
+    $table->string('title');
+    $table->text('body');
+    $table->timestamps();
+});
+```
+
+In the model, in order to access its comment as an attribute, a **method** post should be created, in which the relationship is defined:
+
+```php
+class Comment extends Model {
+    use HasFactory;
+    //...
+    public funcion post() {
+        return $this->belongsTo(Post::class);
+    }
+}
+
+// the post attribute can be accessed with:
+App\Models\Comment::first()->post; //as an attribute!
+```
+
+In the *owner* class, the relationship in this case is `hasMany`, so the same process is done and all the comments can be retrieved with:
+
+```php
+class Post extends Model {
+    use HasFactory;
+    //...
+    public funcion comments() {
+        return $this->hasMany(Comment::class);
+    }
+}
+App\Models\Post::first()->comments; //as an attribute!
+```
+
+## Pivot Tables
+
+Taken from [Lesson 12: Pivot Tables and BelongsToMany relationships](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/12).
+
+[Laravel Documentation for Many-to-Many relationships](https://laravel.com/docs/5.0/eloquent#many-to-many).
+
+A pivot table is a way to implement many to many relationships. They are auxiliar tables with two foreign keys, each one of them referring to their respective model table.
+
+So, if a `Post` has many `Tag`s, but a `Tag` can be related to many `Post`s, so the pivot table relates them.
+
+| id | post_id | tag_id |
+|----|---------|--------|
+| 1  | 5       | 8      |
+| 2  | 7       | 8      |
+| 3  | 5       | 2      |
+
+Here, the `Post` with id of 5 has the tags with id 2 and 8, and the `Tag` with id of 8 is related to the posts with id 5 and 7, and so on.
+
+To build this, the migration should include the pivot table creation, wich by convention is called with the names of both tables in their singular form. In this case: `post_tag`.
+
+In most cases a pivot table's foreign keys should be constrained to be deleted on one of their references being deleted.
+
+Inside the migration file:
+```php
+Schema::create('post_tag', function (Blueprint $table) {
+    $table->id();
+    $table->foreignIdFor(Post::class)->constrained()->cascadeOnDelete();
+    $table->foreignIdFor(Tag::class)->constrained()->cascadeOnDelete();
+    $table->timestamps();
+});
+```
+
+Then, in order to access the tags of a `Post`:
+
+```php
+class Post extends Model {
+    use HasFactory;
+
+    //...
+
+    public function tags() {
+        return $this->hasMany(Tag::class);
+    }
+}
+
+// to use it:
+App\Models\Post::first()->tags; // as attribute!
+```
+
+and viceversa:
+
+```php
+class Tag extends Model {
+    use HasFactory;
+
+    //...
+
+    public function comments() {
+        return $this->belongsToMany(Comment::class);
+    }
+}
+// to use it:
+App\Models\Tag::first()->comments; // as attribute!
+```
+
+To attach a `Tag` to a `Post`:
+
+```php
+$tag->jobs()->attach($job_id); //jobs as a method!!
+```
+
+
 ## Tinker
 
 Artisan's tinker tool allows to interactively execute PHP code. This can be used to test different things, including queries to the database through model objects and much more.
