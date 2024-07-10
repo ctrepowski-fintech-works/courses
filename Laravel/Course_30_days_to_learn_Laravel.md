@@ -2,6 +2,8 @@
 
 Relevant notes taken from [30 Days to Learn Laravel](https://laracasts.com/series/30-days-to-learn-laravel-11).
 
+[Laravel documentation](https://laravel.com/docs/11.x).
+
 ## Components
 
 Laravel allows creating reusable components, with the help of blade. The `components` folder should go inside `resources/views`. When using Blade, component and view files should have `.blade.php` extension.
@@ -63,6 +65,8 @@ php artisan help make
 
 Taken from [Lesson 8: Introduction to migrations](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/8).
 
+[Laravel documentation for Migrations](https://laravel.com/docs/11.x/migrations).
+
 Operations to be applied to the database: create new table, modify some columns, etc.
 
 Main command to run after creating a new migration file is:
@@ -87,6 +91,8 @@ php artisan make:model -m # and other flags required
 
 Taken from [Lesson 9: Meet Eloquent](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/9).
 
+[Laravel Documentation for Eloquent ORM](https://laravel.com/docs/11.x/eloquent).
+
 The Eloquent Object-Relation Mapping implements the mapping between database records and Model objects.
 
 **Important**: Eloquent relies on *convention over configuration*. This means that if the name of the model is `User`, Eloquent will search in the database table `users` by default, which follow the convention on naming the tables with the plural form of the nouns and the models with singular form of the nouns. To modify this behavior we can override the value of the attribute `$table` in the, in this example, `User` model class.
@@ -103,6 +109,7 @@ It throws the `Illuminate\Database\Eloquent\MassAssignmentException`, which is a
 
 So, in order specify which columns can be assigned, their names should be included in the `$fillable` attribute of the model class.
 
+
 ```php
 class Post extends Model {
     // ...
@@ -110,6 +117,63 @@ class Post extends Model {
 }
 ```
 
+### Model factories
+
+Taken from [Lesson 10: Model Factories](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/10).
+
+[Laravel documentation for Elequent Factories](https://laravel.com/docs/11.x/eloquent-factories).
+
+Factories are used to populate database with example data using the model's shape. This is useful for testing situations, or for preview format when creating components and layotus.
+
+To allow a model to use factories, the `HasFactory` trait needs to be inserted to the class:
+
+```php
+class Post extends Model {
+    use HasFactory;
+    //...
+}
+```
+
+[PHP Documentation on Traits](https://www.php.net/manual/en/language.oop5.traits.php).
+
+The data to be created by the factory is defined in the `definition` method of the factory class. The data can be randomized with specific formats using [FakerPHP API](https://fakerphp.org/).
+
+```php
+class UserFactory extends Model {
+    //...
+    public function definition():array {
+        return [
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'email' => fake()->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            //...
+        ]
+    }
+}
+
+// to use this factory:
+User::factory()->create();
+```
+
+For specific state of some fields, new methods can be created:
+
+```php
+class UserFactory extends Model {
+    use HasFactory;
+    //...
+
+    public function definition() //...
+
+    public function unverified(): static {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => null,
+        ])
+    }
+// to create records with this state:
+User::factory()->unverified()->create();
+}
+```
 
 ## Tinker
 
