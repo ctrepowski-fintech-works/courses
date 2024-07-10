@@ -407,3 +407,23 @@ will copy the pagination blade components to the project's views folder, so now 
 
 Therea are also another options: `simplePaginate` and `cursorPaginate`.
 
+## CSRF Protection
+
+Taken from [Lesson 16: Forms and CSRF Explained (with Examples)](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/16).
+
+[Laravel Documentation on CSRF Protection](https://laravel.com/docs/11.x/csrf).
+
+When creating a form for POST, PUT/PATCH, DELETE the request needs to be validated that came from the same source we are expecting it, and no some other malicious site.
+
+This is implemented by adding a hidden field to the form with name `_token`, which value regenerates for each session.
+
+This is done in the view by adding `@csrf` inside a form tag.
+
+```php
+<form action='/posts' method='POST'>
+    @csrf {{/* creates an hidden input with the session token as value */}}
+    <input type="text" name="title" >
+    {{//...
+    }}
+</form>
+```
