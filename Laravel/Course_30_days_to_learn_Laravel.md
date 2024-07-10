@@ -307,3 +307,35 @@ php artisan tinker
 ```
 
 Important: the tinker needs to be reloaded (i.e. closed and started again) when changes are made to the code.
+
+
+## Eager Loading vs Lazy Loading
+
+Taken from [Lesson 13: Eager Loading and the N+1 Problem](https://laracasts.com/series/30-days-to-learn-laravel-11/episodes/13).
+
+By default Laravel loads data from database in *lazy mode*, which means that it would perform the query only when that data is required. This could take to performance issues when using relationships between models, as fetching, for example, all posts will only get the posts and not their comments, so for fetching the comments new queries should be made.
+
+The opposite of this is *eager loading*, in which the first query specifies all the data that should be loaded. In this case, the idea is to load all comments with the posts objects.
+
+To eager load a resource, instead of
+
+```php
+$posts = Post::all();
+```
+
+the statement should be
+
+```php
+$posts = Post::with('comments')->get();
+```
+
+To prevent lazy loading behavior, the `Model` class should be configured like that in App\Providers\AppServiceProvider.php's `boot` method:
+
+```php
+
+public function boot() {
+    Model::preventLazyLoading();
+}
+```
+
+In this case, the `Post:all()` call throws an error.
